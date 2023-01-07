@@ -10,6 +10,10 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
     this.repository = repository;
   }
 
+  async findAll(): Promise<Employee[] | []> {
+    return await this.repository;
+  }
+
   async save(employee: Employee): Promise<Either<DuplicatedEmailError, void>> {
     if (await this.findEmployeeByEmail(employee.email)) {
       return left(new DuplicatedEmailError());
