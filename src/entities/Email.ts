@@ -1,3 +1,5 @@
+import { Either, left, right } from "./../shared/either";
+import { InvalidEmailError } from "./errors/invalid-email";
 export class Email {
   public value: string;
 
@@ -5,14 +7,14 @@ export class Email {
     this.value = email;
   }
 
-  static create(email: string): Email {
-    if (!this.isValidEmail(email)) {
-      return null;
+  static create(email: string): Either<InvalidEmailError, Email> {
+    if (!this.valid(email)) {
+      return left(new InvalidEmailError());
     }
-    return new Email(email);
+    return right(new Email(email));
   }
 
-  static isValidEmail(email: string): boolean {
+  static valid(email: string): boolean {
     if (!email.includes("@")) {
       return false;
     }
