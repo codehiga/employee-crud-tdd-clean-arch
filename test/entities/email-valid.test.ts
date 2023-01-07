@@ -1,15 +1,23 @@
 import { Email } from "./../../src/entities/email";
+import { InvalidEmailError } from "./../../src/entities/errors/invalid-email";
 
-describe("Tests about create a employee with valid email", () => {
-  it("should return false if email is not valid", () => {
-    const email = "invalid_email.com";
-    const response = Email.isValidEmail(email);
-    expect(response).toBeFalsy();
+describe("EmailEntityTest", () => {
+  it("should return email if email is valid", () => {
+    const emailInput = "valid@email.com";
+    const email = Email.create(emailInput).value as Email;
+    expect(email.value).toBe(emailInput);
   });
 
-  it("should return false if email is not valid with whitespaces", () => {
-    const email = "invalid email.com";
-    const response = Email.isValidEmail(email);
-    expect(response).toBeFalsy();
+  it("should return error if email is not valid", () => {
+    const email = "invalid_email.com";
+    const error = Email.create(email).value as InvalidEmailError;
+    expect(error.message).toEqual("O email inserido é inválido!");
+    expect(error.name).toEqual("InvalidEmailError");
+  });
+
+  it("should result be isLeft if email is not valid", () => {
+    const email = "invalid_email.com";
+    const error = Email.create(email);
+    expect(error.isLeft()).toBeTruthy();
   });
 });
