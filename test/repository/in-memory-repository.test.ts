@@ -1,7 +1,7 @@
 import { Employee } from "@/entities/employee";
 import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
 
-function geraSut() {
+function getSut() {
   const employees: Employee[] = [];
   const repository = new InMemoryEmployeeRepository(employees);
   return {
@@ -11,7 +11,7 @@ function geraSut() {
 
 describe("Tests InMemoryEmployeeRepository", () => {
   it("should persist a new Employee", async () => {
-    const { repository } = geraSut();
+    const { repository } = getSut();
     const newEmployee: Employee = Employee.create({
       name: "employee test",
       email: "employeetest@test.com",
@@ -25,7 +25,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
   });
 
   it("should not be able to inser same Employee two times", async () => {
-    const { repository } = geraSut();
+    const { repository } = getSut();
     const newEmployee = Employee.create({
       name: "employee test",
       email: "employeetest@test.com",
@@ -39,7 +39,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
   });
 
   it("should persist a new Employee", async () => {
-    const { repository } = geraSut();
+    const { repository } = getSut();
     const emailNotExists = "notexistemail@test.com";
     const nullResult = await repository.findEmployeeByEmail(emailNotExists);
     expect(nullResult).toBeNull();
