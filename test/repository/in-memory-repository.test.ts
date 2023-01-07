@@ -12,7 +12,7 @@ function getSut() {
 describe("Tests InMemoryEmployeeRepository", () => {
   it("should persist a new Employee", async () => {
     const { repository } = getSut();
-    const newEmployee: Employee = Employee.create({
+    const newEmployee = Employee.create({
       name: "employee test",
       email: "employeetest@test.com",
       type: "employee",
@@ -43,5 +43,30 @@ describe("Tests InMemoryEmployeeRepository", () => {
     const emailNotExists = "notexistemail@test.com";
     const nullResult = await repository.findEmployeeByEmail(emailNotExists);
     expect(nullResult).toBeNull();
+  });
+
+  it("should return a list of Employees", async () => {
+    const { repository } = getSut();
+    const newEmployee1 = Employee.create({
+      name: "employee test",
+      email: "employeetest1@test.com",
+      type: "employee",
+    }).value as Employee;
+    const newEmployee2 = Employee.create({
+      name: "employee test",
+      email: "employeetest2@test.com",
+      type: "employee",
+    }).value as Employee;
+    const newEmployee3 = Employee.create({
+      name: "employee test",
+      email: "employeetest3@test.com",
+      type: "employee",
+    }).value as Employee;
+    await repository.save(newEmployee1);
+    await repository.save(newEmployee2);
+    await repository.save(newEmployee3);
+    const employees = await repository.findAll();
+    expect(employees.length).toBe(3);
+    expect(employees[2].email).toBe(newEmployee3.email);
   });
 });
