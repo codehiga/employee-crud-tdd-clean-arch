@@ -1,11 +1,14 @@
 export class Email {
-  private email: string;
+  public value: string;
 
   constructor(email: string) {
-    this.email = email;
+    this.value = email;
   }
 
   static create(email: string): Email {
+    if (!this.isValidEmail(email)) {
+      return null;
+    }
     return new Email(email);
   }
 
