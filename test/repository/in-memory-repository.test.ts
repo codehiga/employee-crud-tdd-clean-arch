@@ -24,7 +24,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
     expect(employeeFromRepository.email).toBe(newEmployee.email);
   });
 
-  it("should not be able to inser same Employee two times", async () => {
+  it("should not be able to insert same Employee two times", async () => {
     const { repository } = getSut();
     const newEmployee = Employee.create({
       name: "employee test",
@@ -38,7 +38,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
     expect(saveSecondTimeError.message).toBe("Este e-mail já está cadastrado!");
   });
 
-  it("should persist a new Employee", async () => {
+  it("should return null if email not exist", async () => {
     const { repository } = getSut();
     const emailNotExists = "notexistemail@test.com";
     const nullResult = await repository.findEmployeeByEmail(emailNotExists);
