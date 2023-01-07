@@ -12,4 +12,15 @@ describe("Test Employee entity", () => {
     expect(error.message).toBe("O email inserido é inválido!");
     expect(error.name).toBe("InvalidEmailError");
   });
+
+  it("should return error if name is not valid on create a new Employee", () => {
+    const newEmployeeWithInvalidName: NewEmployeeDTO = {
+      name: "E",
+      email: "employee@test.com",
+      type: "employee",
+    };
+    const error = Employee.create(newEmployeeWithInvalidName).value as Error;
+    expect(error.message).toBe("Nome inserido é inválido!");
+    expect(error.name).toBe("InvalidNameError");
+  });
 });
