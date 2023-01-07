@@ -8,6 +8,7 @@ export class ListEmployees {
   }
 
   async execute() {
-    return await this.repository.findAll();
+    const employees = await this.repository.findAll();
+    return employees;
   }
 }
