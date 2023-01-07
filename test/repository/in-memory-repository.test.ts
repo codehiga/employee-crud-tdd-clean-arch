@@ -1,5 +1,5 @@
-import { NewEmployeeDTO } from "./../../src/dto/newEmployeeDTO";
-import { Employee } from "./../../src/entities/Employee";
+import { NewEmployeeDTO } from "./../../src/dto/new-employee-dto";
+import { Employee } from "./../../src/entities/employee";
 import { InMemoryEmployeeRepository } from "./../../src/repository/in-memory-employee-repository";
 
 describe("Tests about InMemoryEmployeeRepository", () => {

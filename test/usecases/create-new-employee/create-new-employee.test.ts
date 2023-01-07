@@ -1,6 +1,6 @@
-import { NewEmployeeDTO } from "./../../../src/dto/newEmployeeDTO";
-import { Employee } from "./../../../src/entities/Employee";
-import { CreateNewEmployee } from "./../../../src/usecases/create-new-employee/CreateNewEmployee";
+import { NewEmployeeDTO } from "./../../../src/dto/new-employee-dto";
+import { Employee } from "./../../../src/entities/employee";
+import { CreateNewEmployee } from "./../../../src/usecases/create-new-employee/create-new-employee.usecase";
 
 describe("Tests about usecase create new employee", () => {
   it("should create a new employee entity", async () => {

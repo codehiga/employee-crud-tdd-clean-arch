@@ -1,4 +1,4 @@
-import { NewEmployeeDTO } from "../dto/newEmployeeDTO";
+import { NewEmployeeDTO } from "../dto/new-employee-dto";
 import { Email } from "./Email";
 
 export class Employee {

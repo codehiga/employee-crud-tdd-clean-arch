@@ -1,4 +1,4 @@
-import { Email } from "./../../../src/entities/Email";
+import { Email } from "./../../src/entities/email";
 
 describe("Tests about create a employee with valid email", () => {
   it("should return false if email is not valid", () => {

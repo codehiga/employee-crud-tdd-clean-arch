@@ -1,5 +1,5 @@
-import { NewEmployeeDTO } from "@/dto/newEmployeeDTO";
-import { Employee } from "./../entities/Employee";
+import { NewEmployeeDTO } from "./../dto/new-employee-dto";
+import { Employee } from "./../entities/employee";
 import { EmployeeRepository } from "./../ports/employee-repository";
 
 export class InMemoryEmployeeRepository implements EmployeeRepository {
