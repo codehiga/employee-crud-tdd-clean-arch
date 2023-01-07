@@ -1,7 +1,8 @@
-import { NewEmployeeDTO } from "./../dto/newEmployeeDTO";
-import { Employee } from "./../entities/Employee";
+import { Employee } from "@/entities/employee";
+import { DuplicatedEmailError } from "@/repository/errors/DuplicatedEmailError";
+import { Either } from "@/shared/either";
 
 export interface EmployeeRepository {
-  save(newEmployee: NewEmployeeDTO): Promise<void>;
-  findEmployeeByEmail(email: string): Promise<Employee>;
+  save(newEmployee: Employee): Promise<Either<DuplicatedEmailError, void>>;
+  findEmployeeByEmail(email: string): Promise<Employee | null>;
 }
