@@ -19,14 +19,14 @@ export class CreateNewEmployee {
   }: NewEmployeeDTO): Promise<
     Either<InvalidNameError | InvalidEmailError, void>
   > {
-    const employeeOrError = Employee.create({
-      email,
-      name,
-      type,
-    });
+    const employeeOrError = Employee.create({ email, name, type });
     if (employeeOrError.isLeft()) {
       return left(employeeOrError.value);
     }
-    await this.repository.save(employeeOrError.value);
+    const saveOrError = await this.repository.save(employeeOrError.value);
+    if (saveOrError?.isLeft()) {
+      return left(saveOrError.value);
+    }
+    return;
   }
 }
