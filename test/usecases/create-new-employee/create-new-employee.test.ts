@@ -1,36 +1,66 @@
-import { NewEmployeeDTO } from "./../../../src/dto/new-employee-dto";
-import { Employee } from "./../../../src/entities/employee";
-import { CreateNewEmployee } from "./../../../src/usecases/create-new-employee/create-new-employee.usecase";
+import { NewEmployeeDTO } from "@/dto/new-employee-dto";
+import { Employee } from "@/entities/employee";
+import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
+import { CreateNewEmployee } from "@/usecases/create-new-employee/create-new-employee.usecase";
 
 describe("Tests about usecase create new employee", () => {
-  it("should create a new employee entity", async () => {
-    const newEmployeeDTO: NewEmployeeDTO = {
+  it("should create a new Employee with usecase execute", async () => {
+    const employees: Employee[] = [];
+    const repository = new InMemoryEmployeeRepository(employees);
+    const newEmployee: NewEmployeeDTO = {
       name: "Employee 1",
-      email: "employee_1@test.com",
+      email: "employee1@test.com",
       type: "employee",
     };
-    const employee = Employee.create(newEmployeeDTO);
-    expect(newEmployeeDTO.name).toBe(employee.name);
+    const createNewEmployee = new CreateNewEmployee(repository);
+    await createNewEmployee.execute({
+      email: newEmployee.email,
+      name: newEmployee.name,
+      type: newEmployee.type,
+    });
+    const employeeFromRepository = await repository.findEmployeeByEmail(
+      newEmployee.email
+    );
+    expect(employeeFromRepository).toEqual(newEmployee);
   });
 
-  it("should return null if email is not valid on create a new EMPLOYEE", () => {
-    const newEmployeeDTO: NewEmployeeDTO = {
-      name: "Invalid Email Employee",
-      email: "invalidEmail test.com",
+  it("should not create a new Employee without name", async () => {
+    const employees: Employee[] = [];
+    const repository = new InMemoryEmployeeRepository(employees);
+    const newEmployee: NewEmployeeDTO = {
+      name: "",
+      email: "employee1@test.com",
       type: "employee",
     };
-    const employee = Employee.create(newEmployeeDTO);
-    expect(employee).toBeNull();
+    const createNewEmployee = new CreateNewEmployee(repository);
+    const executeUseCase = (
+      await createNewEmployee.execute({
+        email: newEmployee.email,
+        name: newEmployee.name,
+        type: newEmployee.type,
+      })
+    ).value as Error;
+    expect(executeUseCase.message).toBe("Nome inserido é inválido!");
+    expect(executeUseCase.name).toBe("InvalidNameError");
   });
 
-  it("should create a new Employee", () => {
-    const newEmployeeDTO: NewEmployeeDTO = {
-      name: "Employee 1",
-      email: "employee_1@test.com",
+  it("should not create a new Employee with invalid email", async () => {
+    const employees: Employee[] = [];
+    const repository = new InMemoryEmployeeRepository(employees);
+    const newEmployee: NewEmployeeDTO = {
+      name: "Employee",
+      email: "invalid_mail test.com",
       type: "employee",
     };
-    const employee = Employee.create(newEmployeeDTO);
-    const createNewEmployee = new CreateNewEmployee();
-    createNewEmployee.execute(employee);
+    const createNewEmployee = new CreateNewEmployee(repository);
+    const executeUseCase = (
+      await createNewEmployee.execute({
+        email: newEmployee.email,
+        name: newEmployee.name,
+        type: newEmployee.type,
+      })
+    ).value as Error;
+    expect(executeUseCase.message).toBe("O email inserido é inválido!");
+    expect(executeUseCase.name).toBe("InvalidEmailError");
   });
 });
