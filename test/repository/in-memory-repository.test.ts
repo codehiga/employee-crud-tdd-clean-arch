@@ -1,20 +1,47 @@
-import { NewEmployeeDTO } from "./../../src/dto/new-employee-dto";
-import { Employee } from "./../../src/entities/employee";
-import { InMemoryEmployeeRepository } from "./../../src/repository/in-memory-employee-repository";
+import { Employee } from "@/entities/employee";
+import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
 
-describe("Tests about InMemoryEmployeeRepository", () => {
+function geraSut() {
+  const employees: Employee[] = [];
+  const repository = new InMemoryEmployeeRepository(employees);
+  return {
+    repository,
+  };
+}
+
+describe("Tests InMemoryEmployeeRepository", () => {
   it("should persist a new Employee", async () => {
-    const employees: Employee[] = [];
-    const repository = new InMemoryEmployeeRepository(employees);
-    const newEmployee: NewEmployeeDTO = {
+    const { repository } = geraSut();
+    const newEmployee: Employee = Employee.create({
       name: "employee test",
       email: "employeetest@test.com",
       type: "employee",
-    };
+    }).value as Employee;
     await repository.save(newEmployee);
     const employeeFromRepository = await repository.findEmployeeByEmail(
       newEmployee.email
     );
-    expect(employeeFromRepository.name).toBe(newEmployee.name);
+    expect(employeeFromRepository.email).toBe(newEmployee.email);
+  });
+
+  it("should not be able to inser same Employee two times", async () => {
+    const { repository } = geraSut();
+    const newEmployee = Employee.create({
+      name: "employee test",
+      email: "employeetest@test.com",
+      type: "employee",
+    }).value as Employee;
+    await repository.save(newEmployee);
+    const saveSecondTimeError = (await repository.save(newEmployee))
+      .value as Error;
+    expect(saveSecondTimeError.name).toBe("DuplicatedEmailError");
+    expect(saveSecondTimeError.message).toBe("Este e-mail já está cadastrado!");
+  });
+
+  it("should persist a new Employee", async () => {
+    const { repository } = geraSut();
+    const emailNotExists = "notexistemail@test.com";
+    const nullResult = await repository.findEmployeeByEmail(emailNotExists);
+    expect(nullResult).toBeNull();
   });
 });
