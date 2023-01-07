@@ -2,9 +2,9 @@ import { NewEmployeeDTO } from "../dto/newEmployeeDTO";
 import { Email } from "./Email";
 
 export class Employee {
-  private name: string;
-  private email: Email;
-  private type: string;
+  public name: string;
+  public email: Email;
+  public type: string;
 
   constructor(name: string, email: Email, type: string) {
     this.name = name;
@@ -13,11 +13,12 @@ export class Employee {
   }
 
   static create({ name, email, type }: NewEmployeeDTO) {
-    if (!Email.isValidEmail(email)) {
-      return false;
+    let emailValid = Email.create(email);
+    if (emailValid) {
+      const employee = new Employee(name, emailValid, type);
+      return employee;
+    } else {
+      return null;
     }
-    const emailValid = Email.create(email);
-    const employee = new Employee(name, emailValid, type);
-    return employee;
   }
 }
