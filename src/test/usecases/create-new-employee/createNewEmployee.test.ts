@@ -9,16 +9,16 @@ describe("Tests about usecase create new employee", () => {
       type: "employee",
     };
     const employee = Employee.create(newEmployeeDTO);
-    expect(employee).toBeInstanceOf(Employee);
+    expect(newEmployeeDTO.name).toBe(employee.name);
   });
 
-  it("should throw a error if email is not valid", () => {
+  it("should return null if email is not valid on create a new EMPLOYEE", () => {
     const newEmployeeDTO: NewEmployeeDTO = {
       name: "Invalid Email Employee",
       email: "invalidEmail test.com",
       type: "employee",
     };
     const employee = Employee.create(newEmployeeDTO);
-    expect(employee).toBeFalsy();
+    expect(employee).toBeNull();
   });
 });
