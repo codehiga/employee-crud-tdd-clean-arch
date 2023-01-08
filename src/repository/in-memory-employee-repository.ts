@@ -1,8 +1,9 @@
 import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
-import { Either, left } from "@/shared/either";
+import { Either, left, right } from "@/shared/either";
 import { Employee } from "./../entities/employee";
 import { EmployeeRepository } from "./../ports/employee-repository";
 import { DuplicatedEmailError } from "./errors/DuplicatedEmailError";
+import { UserToUpdateNotFoundError } from "./errors/user-to-update-not-found-error";
 
 export class InMemoryEmployeeRepository implements EmployeeRepository {
   private repository: Employee[] = [];
@@ -14,15 +15,18 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
   async update(
     email: string,
     updatedEmployeeData: UpdateEmployeeDTO
-  ): Promise<Employee> {
+  ): Promise<Either<UserToUpdateNotFoundError, Employee>> {
     const newRepo = [];
+    const foundedUser = await this.findEmployeeByEmail(email);
+    if (!foundedUser) {
+      return left(new UserToUpdateNotFoundError());
+    }
     this.repository.map((employee) => {
       return employee.email != email ? newRepo.push(employee) : "";
     });
     newRepo.push(updatedEmployeeData);
     this.repository = newRepo;
-    console.log(this.repository);
-    return updatedEmployeeData;
+    return await right(updatedEmployeeData);
   }
 
   async findAll(): Promise<Employee[] | []> {

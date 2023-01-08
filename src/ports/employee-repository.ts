@@ -1,6 +1,7 @@
 import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
 import { Employee } from "@/entities/employee";
 import { DuplicatedEmailError } from "@/repository/errors/DuplicatedEmailError";
+import { UserToUpdateNotFoundError } from "@/repository/errors/user-to-update-not-found-error";
 import { Either } from "@/shared/either";
 
 export interface EmployeeRepository {
@@ -10,5 +11,5 @@ export interface EmployeeRepository {
   update(
     email: string,
     updatedEmployeeData: UpdateEmployeeDTO
-  ): Promise<Employee>;
+  ): Promise<Either<UserToUpdateNotFoundError, Employee>>;
 }
