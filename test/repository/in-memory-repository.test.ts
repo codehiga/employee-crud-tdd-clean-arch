@@ -84,10 +84,26 @@ describe("Tests InMemoryEmployeeRepository", () => {
       name: "employee updated",
       type: "employee",
     };
-    const updatedEmployee: Employee = await repository.update(
-      employee.email,
-      updatedEmployeeData
-    );
+    const updatedEmployee = (
+      await repository.update(employee.email, updatedEmployeeData)
+    ).value;
     expect(updatedEmployee).toEqual(updatedEmployeeData);
+  });
+
+  it("should not be able to update if not found employee", async () => {
+    const { repository } = getSut();
+    const updatedEmployeeNotExistData: UpdateEmployeeDTO = {
+      email: "employee@test.com",
+      name: "employee updated",
+      type: "employee",
+    };
+    const error = (
+      await repository.update(
+        "employeenotexist@test.com",
+        updatedEmployeeNotExistData
+      )
+    ).value as Error;
+    expect(error.message).toBe("Usuário não encontrado!");
+    expect(error.name).toBe("UserToUpdateNotFoundError");
   });
 });
