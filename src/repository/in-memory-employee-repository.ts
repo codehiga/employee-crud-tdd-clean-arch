@@ -1,3 +1,4 @@
+import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
 import { Either, left } from "@/shared/either";
 import { Employee } from "./../entities/employee";
 import { EmployeeRepository } from "./../ports/employee-repository";
@@ -8,6 +9,20 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
 
   constructor(repository: Employee[]) {
     this.repository = repository;
+  }
+
+  async update(
+    email: string,
+    updatedEmployeeData: UpdateEmployeeDTO
+  ): Promise<Employee> {
+    const newRepo = [];
+    this.repository.map((employee) => {
+      return employee.email != email ? newRepo.push(employee) : "";
+    });
+    newRepo.push(updatedEmployeeData);
+    this.repository = newRepo;
+    console.log(this.repository);
+    return updatedEmployeeData;
   }
 
   async findAll(): Promise<Employee[] | []> {
