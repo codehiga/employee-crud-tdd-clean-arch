@@ -1,3 +1,4 @@
+import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
 import { Employee } from "@/entities/employee";
 import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
 
@@ -68,5 +69,25 @@ describe("Tests InMemoryEmployeeRepository", () => {
     const employees = await repository.findAll();
     expect(employees.length).toBe(3);
     expect(employees[2].email).toBe(newEmployee3.email);
+  });
+
+  it("should update a employee", async () => {
+    const { repository } = getSut();
+    const employee = Employee.create({
+      email: "employee@test.com",
+      name: "employee",
+      type: "employee",
+    }).value as Employee;
+    await repository.save(employee);
+    const updatedEmployeeData: UpdateEmployeeDTO = {
+      email: "employee@test.com",
+      name: "employee updated",
+      type: "employee",
+    };
+    const updatedEmployee: Employee = await repository.update(
+      employee.email,
+      updatedEmployeeData
+    );
+    expect(updatedEmployee).toEqual(updatedEmployeeData);
   });
 });
