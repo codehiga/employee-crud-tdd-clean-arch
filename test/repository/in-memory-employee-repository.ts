@@ -47,4 +47,14 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
     if (!employee) return null;
     return employee;
   }
+
+  async delete(email: string): Promise<void> {
+    let tempList = [];
+    this.repository.map((employee) => {
+      if (employee.email !== email) {
+        tempList.push(employee);
+      }
+    });
+    this.repository = tempList;
+  }
 }

@@ -12,4 +12,5 @@ export interface EmployeeRepository {
     email: string,
     updatedEmployeeData: UpdateEmployeeDTO
   ): Promise<Either<UserToUpdateNotFoundError, Employee>>;
+  delete(email: string): Promise<void>;
 }
