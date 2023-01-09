@@ -11,7 +11,7 @@ function getSut() {
 }
 
 describe("Tests InMemoryEmployeeRepository", () => {
-  it("should persist a new Employee", async () => {
+  it("should persist a new employee", async () => {
     const { repository } = getSut();
     const newEmployee = Employee.create({
       name: "employee test",
@@ -25,7 +25,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
     expect(employeeFromRepository.email).toBe(newEmployee.email);
   });
 
-  it("should not be able to insert same Employee two times", async () => {
+  it("should not be able to insert same employee two times", async () => {
     const { repository } = getSut();
     const newEmployee = Employee.create({
       name: "employee test",
@@ -105,5 +105,18 @@ describe("Tests InMemoryEmployeeRepository", () => {
     ).value as Error;
     expect(error.message).toBe("Usuário não encontrado!");
     expect(error.name).toBe("UserToUpdateNotFoundError");
+  });
+
+  it("should delete a employee by email", async () => {
+    const { repository } = getSut();
+    const employee = Employee.create({
+      name: "employee test",
+      email: "employeetest@test.com",
+      type: "employee",
+    }).value as Employee;
+    await repository.save(employee);
+    await repository.delete(employee.email);
+    const list = await repository.findAll();
+    expect(list.length).toBe(0);
   });
 });
