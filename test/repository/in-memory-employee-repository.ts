@@ -1,9 +1,9 @@
 import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
+import { Employee } from "@/entities/employee";
+import { DuplicatedEmailError } from "@/repository/errors/DuplicatedEmailError";
+import { UserToUpdateNotFoundError } from "@/repository/errors/user-to-update-not-found-error";
+import { EmployeeRepository } from "@/repository/ports/employee-repository";
 import { Either, left, right } from "@/shared/either";
-import { Employee } from "./../entities/employee";
-import { DuplicatedEmailError } from "./errors/DuplicatedEmailError";
-import { UserToUpdateNotFoundError } from "./errors/user-to-update-not-found-error";
-import { EmployeeRepository } from "./ports/employee-repository";
 
 export class InMemoryEmployeeRepository implements EmployeeRepository {
   private repository: Employee[] = [];

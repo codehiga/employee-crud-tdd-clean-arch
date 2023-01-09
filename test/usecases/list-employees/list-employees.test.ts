@@ -1,7 +1,7 @@
 import { Employee } from "@/entities/employee";
-import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
 import { EmployeeRepository } from "@/repository/ports/employee-repository";
 import { ListEmployees } from "@/usecases/list-employees/list-employees";
+import { InMemoryEmployeeRepository } from "@test/repository/in-memory-employee-repository";
 
 describe("Test ListEmployee usecase", () => {
   let repository: EmployeeRepository;

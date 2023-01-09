@@ -1,7 +1,7 @@
 import { NewEmployeeDTO } from "@/dto/new-employee-dto";
 import { Employee } from "@/entities/employee";
-import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
 import { CreateNewEmployee } from "@/usecases/create-new-employee/create-new-employee.usecase";
+import { InMemoryEmployeeRepository } from "@test/repository/in-memory-employee-repository";
 
 describe("Tests about usecase create new employee", () => {
   it("should create a new Employee with usecase execute", async () => {

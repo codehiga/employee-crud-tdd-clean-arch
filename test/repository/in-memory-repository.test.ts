@@ -1,6 +1,6 @@
 import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
 import { Employee } from "@/entities/employee";
-import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
+import { InMemoryEmployeeRepository } from "./in-memory-employee-repository";
 
 function getSut() {
   const employees: Employee[] = [];
