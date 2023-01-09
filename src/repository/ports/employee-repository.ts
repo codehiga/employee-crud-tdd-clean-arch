@@ -1,5 +1,5 @@
-import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
 import { Employee } from "@/entities/employee";
+import { UpdateEmployeeDTO } from "@/entities/ports/dto/update-employee-dto";
 import { DuplicatedEmailError } from "@/repository/errors/DuplicatedEmailError";
 import { UserToUpdateNotFoundError } from "@/repository/errors/user-to-update-not-found-error";
 import { Either } from "@/shared/either";

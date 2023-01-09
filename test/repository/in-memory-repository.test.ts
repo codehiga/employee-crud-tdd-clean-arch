@@ -1,5 +1,5 @@
-import { UpdateEmployeeDTO } from "@/dto/update-employee-dto";
 import { Employee } from "@/entities/employee";
+import { UpdateEmployeeDTO } from "@/entities/ports/dto/update-employee-dto";
 import { InMemoryEmployeeRepository } from "./in-memory-employee-repository";
 
 function getSut() {

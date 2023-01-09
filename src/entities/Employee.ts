@@ -1,4 +1,4 @@
-import { NewEmployeeDTO } from "@/dto/new-employee-dto";
+import { NewEmployeeDTO } from "@/entities/ports/dto/new-employee-dto";
 import { Either, left, right } from "@/shared/either";
 import { Email } from "./email";
 import { InvalidEmailError } from "./errors/invalid-email";

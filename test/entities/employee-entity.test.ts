@@ -1,5 +1,5 @@
-import { NewEmployeeDTO } from "@/dto/new-employee-dto";
 import { Employee } from "@/entities/employee";
+import { NewEmployeeDTO } from "@/entities/ports/dto/new-employee-dto";
 
 describe("Test Employee entity", () => {
   it("should return error if email is not valid on create a new Employee", () => {

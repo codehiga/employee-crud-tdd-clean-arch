@@ -1,7 +1,7 @@
-import { NewEmployeeDTO } from "@/dto/new-employee-dto";
 import { Employee } from "@/entities/employee";
 import { InvalidEmailError } from "@/entities/errors/invalid-email";
 import { InvalidNameError } from "@/entities/errors/invalid-name";
+import { NewEmployeeDTO } from "@/entities/ports/dto/new-employee-dto";
 import { EmployeeRepository } from "@/repository/ports/employee-repository";
 import { Either, left } from "@/shared/either";
 

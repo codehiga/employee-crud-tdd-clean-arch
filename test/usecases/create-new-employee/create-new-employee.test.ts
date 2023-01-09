@@ -1,5 +1,5 @@
-import { NewEmployeeDTO } from "@/dto/new-employee-dto";
 import { Employee } from "@/entities/employee";
+import { NewEmployeeDTO } from "@/entities/ports/dto/new-employee-dto";
 import { CreateNewEmployee } from "@/usecases/create-new-employee/create-new-employee.usecase";
 import { InMemoryEmployeeRepository } from "@test/repository/in-memory-employee-repository";
 
