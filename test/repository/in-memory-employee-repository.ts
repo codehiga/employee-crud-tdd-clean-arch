@@ -1,6 +1,6 @@
 import { Employee } from "@/entities/employee";
 import { UpdateEmployeeDTO } from "@/entities/ports/dto/update-employee-dto";
-import { DuplicatedEmailError } from "@/repository/errors/DuplicatedEmailError";
+import { RepositoryError } from "@/repository/errors/repository-error";
 import { UserToUpdateNotFoundError } from "@/repository/errors/user-to-update-not-found-error";
 import { EmployeeRepository } from "@/repository/ports/employee-repository";
 import { Either, left, right } from "@/shared/either";
@@ -33,11 +33,13 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
     return await this.repository;
   }
 
-  async save(employee: Employee): Promise<Either<DuplicatedEmailError, void>> {
-    if (await this.findEmployeeByEmail(employee.email)) {
-      return left(new DuplicatedEmailError());
+  async save(employee: Employee): Promise<Either<RepositoryError, Employee>> {
+    try {
+      await this.repository.push(employee);
+      return right(employee);
+    } catch (e) {
+      return left(new RepositoryError("Erro ao salvar funcionário!"));
     }
-    await this.repository.push(employee);
   }
 
   async findEmployeeByEmail(email: string): Promise<Employee | null> {
