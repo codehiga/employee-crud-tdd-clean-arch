@@ -1,7 +1,7 @@
 import { Either, left } from "@/shared/either";
 import { Employee } from "./../entities/employee";
-import { EmployeeRepository } from "./../ports/employee-repository";
 import { DuplicatedEmailError } from "./errors/DuplicatedEmailError";
+import { EmployeeRepository } from "./ports/employee-repository";
 
 export class InMemoryEmployeeRepository implements EmployeeRepository {
   private repository: Employee[] = [];

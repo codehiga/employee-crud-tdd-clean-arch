@@ -1,6 +1,6 @@
 import { Employee } from "@/entities/employee";
-import { EmployeeRepository } from "@/ports/employee-repository";
 import { InMemoryEmployeeRepository } from "@/repository/in-memory-employee-repository";
+import { EmployeeRepository } from "@/repository/ports/employee-repository";
 import { ListEmployees } from "@/usecases/list-employees/list-employees";
 
 describe("Test ListEmployee usecase", () => {

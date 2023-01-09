@@ -1,4 +1,4 @@
-import { EmployeeRepository } from "@/ports/employee-repository";
+import { EmployeeRepository } from "@/repository/ports/employee-repository";
 
 export class ListEmployees {
   private readonly repository: EmployeeRepository;
