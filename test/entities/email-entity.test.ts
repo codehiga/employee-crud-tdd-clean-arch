@@ -1,5 +1,5 @@
-import { Email } from "./../../src/entities/email";
-import { InvalidEmailError } from "./../../src/entities/errors/invalid-email";
+import { Email } from "@/entities/email";
+import { InvalidEmailError } from "@/entities/errors/invalid-email";
 
 describe("EmailEntityTest", () => {
   it("should return email if email is valid", () => {
