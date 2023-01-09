@@ -7,6 +7,8 @@ describe("Update employee", () => {
   it("should update a employee", async () => {
     const employees: Employee[] = [];
     let repository = new InMemoryEmployeeRepository(employees);
+    let createNewEmployeeUseCase = new CreateNewEmployee(repository);
+    let updateEmployeeUseCase = new UpdateEmployee(repository);
     const employeeOrError = Employee.create({
       email: "employee@test.com",
       name: "employee",
@@ -17,8 +19,6 @@ describe("Update employee", () => {
       name: "employee updated",
       type: "employee",
     });
-    let createNewEmployeeUseCase = new CreateNewEmployee(repository);
-    let updateEmployeeUseCase = new UpdateEmployee(repository);
     if (employeeOrError.isRight() && employeeToReplaceOlderOrError.isRight()) {
       await createNewEmployeeUseCase.execute(employeeOrError.value);
       await updateEmployeeUseCase.execute(
@@ -30,5 +30,27 @@ describe("Update employee", () => {
       "employee@test.com"
     );
     expect(employeeFounded.name).toBe("employee updated");
+  });
+
+  it("should return error if employee email not exist", async () => {
+    const employees: Employee[] = [];
+    let repository = new InMemoryEmployeeRepository(employees);
+    let updateEmployeeUseCase = new UpdateEmployee(repository);
+    const employeeOrError = Employee.create({
+      email: "employee@test.com",
+      name: "employee",
+      type: "employee",
+    });
+    let error: Error;
+    if (employeeOrError.isRight()) {
+      error = (
+        await updateEmployeeUseCase.execute(
+          "notexistemail@test.com",
+          employeeOrError.value
+        )
+      ).value as Error;
+    }
+    expect(error.message).toBe("Usuário não encontrado!");
+    expect(error.name).toBe("UserToUpdateNotFoundError");
   });
 });
