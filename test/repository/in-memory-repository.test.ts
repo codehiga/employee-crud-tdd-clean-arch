@@ -46,7 +46,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
     expect(nullResult).toBeNull();
   });
 
-  it("should return a list of Employees", async () => {
+  it("should return a list of employees", async () => {
     const { repository } = getSut();
     const newEmployee1 = Employee.create({
       name: "employee test",
