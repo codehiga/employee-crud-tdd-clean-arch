@@ -63,4 +63,31 @@ describe("Tests about usecase create new employee", () => {
     expect(executeUseCase.message).toBe("O email inserido é inválido!");
     expect(executeUseCase.name).toBe("InvalidEmailError");
   });
+
+  it("should not create a new Employee if email exists", async () => {
+    const employees: Employee[] = [];
+    const repository = new InMemoryEmployeeRepository(employees);
+    const newEmployee: NewEmployeeDTO = {
+      name: "Employee",
+      email: "employeeduplicated@test.com",
+      type: "employee",
+    };
+    const createNewEmployee = new CreateNewEmployee(repository);
+    await createNewEmployee.execute({
+      email: newEmployee.email,
+      name: newEmployee.name,
+      type: newEmployee.type,
+    });
+    const executeDuplicatedEmailUseCase = (
+      await createNewEmployee.execute({
+        email: newEmployee.email,
+        name: newEmployee.name,
+        type: newEmployee.type,
+      })
+    ).value as Error;
+    expect(executeDuplicatedEmailUseCase.name).toBe("DuplicatedEmailError");
+    expect(executeDuplicatedEmailUseCase.message).toBe(
+      "Este e-mail já está cadastrado!"
+    );
+  });
 });
