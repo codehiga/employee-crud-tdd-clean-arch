@@ -26,9 +26,9 @@ describe("Update employee", () => {
         employeeToReplaceOlderOrError.value
       );
     }
-    const employeeFounded = await repository.findEmployeeByEmail(
-      "employee@test.com"
-    );
+    const employeeFounded = (
+      await repository.findEmployeeByEmail("employee@test.com")
+    ).value as Employee;
     expect(employeeFounded.name).toBe("employee updated");
   });
 

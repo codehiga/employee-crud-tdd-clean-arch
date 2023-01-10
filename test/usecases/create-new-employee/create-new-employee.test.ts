@@ -18,9 +18,9 @@ describe("Tests about usecase create new employee", () => {
       name: newEmployee.name,
       type: newEmployee.type,
     });
-    const employeeFromRepository = await repository.findEmployeeByEmail(
-      newEmployee.email
-    );
+    const employeeFromRepository = (
+      await repository.findEmployeeByEmail(newEmployee.email)
+    ).value as Employee;
     expect(employeeFromRepository).toEqual(newEmployee);
   });
 

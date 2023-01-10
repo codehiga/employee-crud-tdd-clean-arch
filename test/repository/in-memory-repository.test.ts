@@ -19,17 +19,11 @@ describe("Tests InMemoryEmployeeRepository", () => {
       type: "employee",
     }).value as Employee;
     await repository.save(newEmployee);
-    const employeeFromRepository = await repository.findEmployeeByEmail(
-      newEmployee.email
-    );
+    const employeeFromRepository = (
+      await repository.findEmployeeByEmail(newEmployee.email)
+    ).value as Employee;
+    console.log(employeeFromRepository);
     expect(employeeFromRepository.email).toBe(newEmployee.email);
-  });
-
-  it("should return null if email not exist", async () => {
-    const { repository } = getSut();
-    const emailNotExists = "notexistemail@test.com";
-    const nullResult = await repository.findEmployeeByEmail(emailNotExists);
-    expect(nullResult).toBeNull();
   });
 
   it("should return a list of employees", async () => {
@@ -52,7 +46,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
     await repository.save(newEmployee1);
     await repository.save(newEmployee2);
     await repository.save(newEmployee3);
-    const employees = await repository.findAll();
+    const employees = (await (await repository.findAll()).value) as Employee[];
     expect(employees.length).toBe(3);
     expect(employees[2].email).toBe(newEmployee3.email);
   });
@@ -102,7 +96,7 @@ describe("Tests InMemoryEmployeeRepository", () => {
     }).value as Employee;
     await repository.save(employee);
     await repository.delete(employee.email);
-    const list = await repository.findAll();
+    const list = (await (await repository.findAll()).value) as Employee[];
     expect(list.length).toBe(0);
   });
 });

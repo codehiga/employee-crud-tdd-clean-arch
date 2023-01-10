@@ -29,7 +29,9 @@ describe("Test ListEmployee usecase", () => {
 
   it("should return all employees", async () => {
     const listEmployeesUseCase = new ListEmployees(repository);
-    const result = await listEmployeesUseCase.execute();
+    const result = (await (
+      await listEmployeesUseCase.execute()
+    ).value) as Employee[];
     expect(result.length).toBe(2);
     expect(result[0].email).toBe("employee@test.com");
   });
