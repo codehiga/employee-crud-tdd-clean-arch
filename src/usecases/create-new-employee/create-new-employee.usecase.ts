@@ -30,8 +30,10 @@ export class CreateNewEmployee {
     const employeeFoundedOrNull = await this.repository.findEmployeeByEmail(
       email
     );
-    if (employeeFoundedOrNull) {
-      return left(new DuplicatedEmailError());
+    if (employeeFoundedOrNull.isRight()) {
+      if (employeeFoundedOrNull.value) {
+        return left(new DuplicatedEmailError());
+      }
     }
     const saved = await this.repository.save(employeeOrError.value);
     return saved;

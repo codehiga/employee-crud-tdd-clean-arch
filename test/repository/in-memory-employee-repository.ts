@@ -19,8 +19,10 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
     try {
       const newRepo = [];
       const foundedUser = await this.findEmployeeByEmail(email);
-      if (!foundedUser) {
-        return left(new UserToUpdateNotFoundError());
+      if (foundedUser.isRight()) {
+        if (!foundedUser.value) {
+          return left(new UserToUpdateNotFoundError());
+        }
       }
       this.repository.map((employee) => {
         return employee.email != email ? newRepo.push(employee) : "";
@@ -59,8 +61,11 @@ export class InMemoryEmployeeRepository implements EmployeeRepository {
       const employee = await this.repository.find(
         (employee) => employee.email == email
       );
-      if (!employee) return null;
-      return right(employee);
+      if (employee) {
+        return right(employee);
+      } else {
+        return right(null);
+      }
     } catch (e) {
       return left(
         new RepositoryError("Erro ao resgatar funcionário pelo email: " + email)
