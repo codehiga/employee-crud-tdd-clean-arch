@@ -22,7 +22,6 @@ describe("Tests InMemoryEmployeeRepository", () => {
     const employeeFromRepository = (
       await repository.findEmployeeByEmail(newEmployee.email)
     ).value as Employee;
-    console.log(employeeFromRepository);
     expect(employeeFromRepository.email).toBe(newEmployee.email);
   });
 
@@ -83,8 +82,8 @@ describe("Tests InMemoryEmployeeRepository", () => {
         updatedEmployeeNotExistData
       )
     ).value as Error;
-    expect(error.message).toBe("Usuário não encontrado!");
     expect(error.name).toBe("UserToUpdateNotFoundError");
+    expect(error.message).toBe("Usuário não encontrado!");
   });
 
   it("should delete a employee by email", async () => {

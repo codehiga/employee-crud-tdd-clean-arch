@@ -9,23 +9,19 @@ describe("Update employee", () => {
     let repository = new InMemoryEmployeeRepository(employees);
     let createNewEmployeeUseCase = new CreateNewEmployee(repository);
     let updateEmployeeUseCase = new UpdateEmployee(repository);
-    const employeeOrError = Employee.create({
+    const employeeCreated = await createNewEmployeeUseCase.execute({
       email: "employee@test.com",
       name: "employee",
       type: "employee",
     });
-    const employeeToReplaceOlderOrError = Employee.create({
+    if (employeeCreated.isLeft()) {
+      console.log(employeeCreated.value);
+    }
+    await updateEmployeeUseCase.execute("employee@test.com", {
       email: "employee@test.com",
       name: "employee updated",
       type: "employee",
     });
-    if (employeeOrError.isRight() && employeeToReplaceOlderOrError.isRight()) {
-      await createNewEmployeeUseCase.execute(employeeOrError.value);
-      await updateEmployeeUseCase.execute(
-        employeeOrError.value.email,
-        employeeToReplaceOlderOrError.value
-      );
-    }
     const employeeFounded = (
       await repository.findEmployeeByEmail("employee@test.com")
     ).value as Employee;
@@ -36,20 +32,13 @@ describe("Update employee", () => {
     const employees: Employee[] = [];
     let repository = new InMemoryEmployeeRepository(employees);
     let updateEmployeeUseCase = new UpdateEmployee(repository);
-    const employeeOrError = Employee.create({
-      email: "employee@test.com",
-      name: "employee",
-      type: "employee",
-    });
-    let error: Error;
-    if (employeeOrError.isRight()) {
-      error = (
-        await updateEmployeeUseCase.execute(
-          "notexistemail@test.com",
-          employeeOrError.value
-        )
-      ).value as Error;
-    }
+    let error = (
+      await updateEmployeeUseCase.execute("notexistemail@test.com", {
+        email: "employee@test.com",
+        name: "employee",
+        type: "employee",
+      })
+    ).value as Error;
     expect(error.message).toBe("Usuário não encontrado!");
     expect(error.name).toBe("UserToUpdateNotFoundError");
   });
